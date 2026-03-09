@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 public class KeyValStorage {
 
+    private static final String tombstone = "TOMBSTONEDELETEDMUSTREMOVE";
+
     private Map<String, String> userDB;
 
     public KeyValStorage(){
@@ -41,5 +43,15 @@ public class KeyValStorage {
         }
 
         return this.userDB.keySet().stream().collect(Collectors.joining(", "));
+    }
+
+    public void addKVPair(String key, String value){
+        if(value.equalsIgnoreCase(tombstone)){
+            if(this.userDB.containsKey(key)) {
+                this.userDB.remove(key);
+            }
+        }
+
+
     }
 }
