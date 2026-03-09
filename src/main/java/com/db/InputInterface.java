@@ -1,5 +1,6 @@
-package com.memdb;
+package com.db;
 
 public interface InputInterface {
     public String runCommand(String[] param);
 }
+

@@ -1,4 +1,4 @@
-package com.memdb;
+package com.db;
 
 import java.util.Scanner;
 
