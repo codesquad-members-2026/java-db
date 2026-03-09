@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 
 public class SaveFile {
 
-    private static final String fileName = "save.dat";
+    private static final String fileName = "save";
 
     private static final int keyLengthByte = 4;
     private static final int valLengthByte = 4;
@@ -22,28 +22,32 @@ public class SaveFile {
         return Bytes.concat(keySizeInByte,keyBody,valSizeInByte,valBody);
     }
 
-    public KeyValStorage loadAllFile(){
-        int saveCounter = 0;
-        KeyValStorage newStorage = new KeyValStorage();
+    public void loadAllFile( KeyValStorage newStorage){
         File saveFile = new File(fileName);
         if(!saveFile.exists()){
-            return newStorage;
+            return;
         }
 
         try(InputStream istream = new FileInputStream(saveFile);
             DataInputStream bufferedStream = new DataInputStream(istream);
         ){
-            int keyLength =  bufferedStream.readInt();
-            byte[] keyString = new byte[keyLength];
-            bufferedStream.readFully(keyString);
-            int valLength = bufferedStream.readInt();
-            byte[] valString = new byte[valLength];
-            bufferedStream.readFully(valString);
-            newStorage.addKVPair(new String(keyString), new String(valString));
+            while(true){
+                try{
+                    int keyLength =  bufferedStream.readInt();
+                    byte[] keyString = new byte[keyLength];
+                    bufferedStream.readFully(keyString);
+                    int valLength = bufferedStream.readInt();
+                    byte[] valString = new byte[valLength];
+                    bufferedStream.readFully(valString);
+                    newStorage.addKVPair(new String(keyString), new String(valString));
+                } catch (EOFException eof) {
+                    break;
+                }
+            }
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
 
     }
 
