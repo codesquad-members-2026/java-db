@@ -39,6 +39,12 @@ public class InputParser {
 
     public String runCommand(String userInput){
         String[] splitInput = userInput.split(" ");
-        return this.commandMap.get(splitInput[0]).runCommand(Arrays.copyOfRange(splitInput,1,splitInput.length));
+        String result = "";
+        try{
+            result = this.commandMap.get(splitInput[0]).runCommand(Arrays.copyOfRange(splitInput,1,splitInput.length));
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 }
