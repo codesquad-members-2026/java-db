@@ -12,29 +12,26 @@ public class DatabaseManager {
         System.out.println("프로그램을 시작합니다");
         Scanner scanner = new Scanner(System.in);
 
-        String readLine = scanner.nextLine();
+        Command command = CommandParser.parse(scanner.nextLine());
 
-        while (!readLine.equalsIgnoreCase("EXIT")) {
+        while (!command.getType().equals("EXIT")) {
             try {
-                System.out.println(execute(readLine));
+                System.out.println(execute(command));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-            readLine = scanner.nextLine();
+            command = CommandParser.parse(scanner.nextLine());
         }
 
         System.out.println("프로그램을 종료합니다");
     }
 
 
-    public String execute(String getName) {
-        StringTokenizer tokenizer = new StringTokenizer(getName);
-        String command = tokenizer.nextToken();
-
-        return switch (command.toUpperCase()) {
-            case "SET" -> db.set(tokenizer.nextToken(), tokenizer.nextToken());
-            case "GET" -> db.get(tokenizer.nextToken());
-            case "DELETE" -> db.delete(tokenizer.nextToken());
+    public String execute(Command command) {
+        return switch (command.getType()) {
+            case "SET" -> db.set(command.getKey(), command.getValue());
+            case "GET" -> db.get(command.getKey());
+            case "DELETE" -> db.delete(command.getKey());
             case "KEYS" -> db.getKeys();
             default -> throw new IllegalArgumentException("잘못된 명령");
         };
