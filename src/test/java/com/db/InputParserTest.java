@@ -39,10 +39,10 @@ public class InputParserTest {
     public void parserDeleteTest(){
         try{
 
-            storage.delete("a");
-            storage.delete("b");
-            storage.delete("c");
-            storage.delete("d");
+            parser.runCommand("DELETE a");
+            parser.runCommand("DELETE b");
+            parser.runCommand("DELETE c");
+            parser.runCommand("DELETE d");
             assertThatThrownBy(() -> storage.get("a")).isInstanceOf(Exception.class);
             assertThatThrownBy(() ->storage.get("b")).isInstanceOf(Exception.class);
             assertThatThrownBy(() ->storage.get("c")).isInstanceOf(Exception.class);

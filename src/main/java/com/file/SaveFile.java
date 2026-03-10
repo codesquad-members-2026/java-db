@@ -1,16 +1,20 @@
 package com.file;
 import com.db.KeyValStorage;
 import com.google.common.primitives.Bytes;
-
+import java.nio.file.Path;
 import java.io.*;
 import java.nio.ByteBuffer;
 
 public class SaveFile {
 
-    private static final String fileName = "save";
+    private Path fileName = Path.of("save");
 
     private static final int keyLengthByte = 4;
     private static final int valLengthByte = 4;
+
+    public void setFileName(Path dir){
+        this.fileName = dir;
+    }
 
     public byte[] serializeKVPair(String key, String val){
         int sizeKey = key.getBytes().length;
@@ -22,8 +26,8 @@ public class SaveFile {
         return Bytes.concat(keySizeInByte,keyBody,valSizeInByte,valBody);
     }
 
-    public void loadAllFile( KeyValStorage newStorage){
-        File saveFile = new File(fileName);
+    public void loadAllFile(KeyValStorage newStorage){
+        File saveFile = fileName.toFile();
         if(!saveFile.exists()){
             return;
         }
@@ -52,7 +56,7 @@ public class SaveFile {
     }
 
     public void saveToFile(String key, String val){
-        File newFile = new File(fileName);
+        File newFile = fileName.toFile();
 
         try(OutputStream fileWriter = new FileOutputStream(newFile,true);
             BufferedOutputStream bw = new BufferedOutputStream(fileWriter)){

@@ -18,7 +18,7 @@ public class InputParser {
             try{
                 return this.storage.get(kv[0]);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                return e.getMessage();
             }
         });
         this.commandMap.put("KEYS", (String[] kv) -> {
@@ -29,7 +29,7 @@ public class InputParser {
                 this.storage.delete(kv[0]);
                 return "OK";
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                return e.getMessage();
             }
         });
         this.commandMap.put("EXIT", (String[] kv)-> {
