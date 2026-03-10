@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 import java.nio.ByteBuffer;
 import static org.assertj.core.api.Assertions.*;
 
-public class TestSaveFile {
+public class SaveFileTest {
 
     KeyValStorage resultStorage;
     SaveFile saveSystem;
