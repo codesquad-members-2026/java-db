@@ -1,33 +1,36 @@
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class DataBase {
-    private final Map<String, String> db = new HashMap<>();
+    private final Map<String, String> store = new HashMap<>();
 
-    public void set(String key, String value) {
-        db.put(key, value);
+    public String set(String key, String value) {
+        return store.put(key, value);
     }
 
     public String get(String key) {
         validateKeyExists(key);
-        return db.get(key);
+        return store.get(key);
     }
 
-    public void delete(String key) {
+    public String delete(String key) {
         validateKeyExists(key);
-        db.remove(key);
+        return store.remove(key);
     }
 
     private void validateKeyExists(String key) {
-        if (!db.containsKey(key)) {
+        if (!store.containsKey(key)) {
             throw new NoSuchElementException("키가 존재하지 않음");
         }
     }
 
-    public Set<String> getKeys() {
-        return db.keySet();
+    public String getKeys() {
+        StringBuilder sb = new StringBuilder();
+        for (String key : store.keySet()) {
+            sb.append(key).append(" ");
+        }
+        return sb.toString();
     }
 }

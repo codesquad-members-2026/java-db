@@ -18,10 +18,8 @@ class DataBaseTest {
     @Test
     @DisplayName("SET 후 GET으로 값을 조회할 수 있다")
     void setAndGet() {
-        String key = "name";
-        String value = "gabi";
-        db.set(key, value);
-        assertThat(db.get(key)).isEqualTo(value);
+        db.set("name", "gabi");
+        assertThat(db.get("name")).isEqualTo("gabi");
     }
 
     @Test
@@ -34,27 +32,20 @@ class DataBaseTest {
     @Test
     @DisplayName("동일한 키가 존재하면 덮어쓴다")
     void setOverwrite() {
-        String key = "number";
-        String value = "100";
+        db.set("number", "100");
+        db.set("number", "500");
 
-        db.set(key, value);
-
-        String newValue = "500";
-        db.set(key, newValue);
-
-        assertThat(db.get(key)).isEqualTo(newValue);
+        assertThat(db.get("number")).isEqualTo("500");
     }
 
 
     @Test
     @DisplayName("키를 삭제한다")
     void delete() {
-        String key = "name";
-        String name = "gabi";
-        db.set(key, name);
-        db.delete(key);
+        db.set("name", "gabi");
+        db.delete("name");
 
-        assertThatThrownBy(() -> db.get(key))
+        assertThatThrownBy(() -> db.get("name"))
                 .isInstanceOf(NoSuchElementException.class);
     }
 
@@ -73,7 +64,7 @@ class DataBaseTest {
             db.set(key, "value");
         }
 
-        assertThat(db.getKeys()).containsExactlyInAnyOrderElementsOf(keys);
+        assertThat(db.getKeys().split(" ")).containsExactlyInAnyOrderElementsOf(keys);
     }
 
 }
