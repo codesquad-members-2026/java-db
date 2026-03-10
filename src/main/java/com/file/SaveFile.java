@@ -7,12 +7,12 @@ import java.nio.ByteBuffer;
 
 public class SaveFile {
 
-    private Path fileName = Path.of("save");
+    private String fileName = "save";
 
     private static final int keyLengthByte = 4;
     private static final int valLengthByte = 4;
 
-    public void setFileName(Path dir){
+    public void setFileName(String dir){
         this.fileName = dir;
     }
 
@@ -27,7 +27,7 @@ public class SaveFile {
     }
 
     public void loadAllFile(KeyValStorage newStorage){
-        File saveFile = fileName.toFile();
+        File saveFile = new File(fileName);
         if(!saveFile.exists()){
             return;
         }
@@ -56,7 +56,7 @@ public class SaveFile {
     }
 
     public void saveToFile(String key, String val){
-        File newFile = fileName.toFile();
+        File newFile = new File(fileName);
 
         try(OutputStream fileWriter = new FileOutputStream(newFile,true);
             BufferedOutputStream bw = new BufferedOutputStream(fileWriter)){
