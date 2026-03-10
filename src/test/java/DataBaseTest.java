@@ -2,6 +2,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +28,7 @@ class DataBaseTest {
     @DisplayName("없는 키로 조회하면 예외가 발생해야한다")
     void getNonExistentKey() {
         assertThatThrownBy(() -> db.get("hello"))
-                .isInstanceOf(Exception.class);
+                .isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
@@ -42,5 +45,35 @@ class DataBaseTest {
         assertThat(db.get(key)).isEqualTo(newValue);
     }
 
+
+    @Test
+    @DisplayName("키를 삭제한다")
+    void delete() {
+        String key = "name";
+        String name = "gabi";
+        db.set(key, name);
+        db.delete(key);
+
+        assertThatThrownBy(() -> db.get(key))
+                .isInstanceOf(NoSuchElementException.class);
+    }
+
+    @Test
+    @DisplayName("없는 키를 삭제하면 예외가 발생한다")
+    void deleteNonExistentKey() {
+        assertThatThrownBy(() -> db.delete("hello"))
+                .isInstanceOf(NoSuchElementException.class);
+    }
+
+    @Test
+    @DisplayName("Keys는 저장된 모든 key를 반환한다")
+    void getKeys() {
+        Set<String> keys = Set.of("key1", "key2", "key3", "key10");
+        for (String key : keys) {
+            db.set(key, "value");
+        }
+
+        assertThat(db.getKeys()).containsExactlyInAnyOrderElementsOf(keys);
+    }
 
 }
