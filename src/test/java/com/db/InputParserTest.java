@@ -1,16 +1,12 @@
-package com.memdb;
-
+package com.db;
 
 import org.junit.jupiter.api.*;
 import static org.assertj.core.api.Assertions.*;
 
-
 public class InputParserTest {
-
 
     InputParser parser;
     KeyValStorage storage;
-
 
     @BeforeEach
     public void setUp(){
@@ -21,8 +17,6 @@ public class InputParserTest {
         parser.runCommand("SET c cccc");
         parser.runCommand("SET d dddd");
     }
-
-
 
 
     @Test
@@ -41,16 +35,14 @@ public class InputParserTest {
         }
     }
 
-
     @Test
     public void parserDeleteTest(){
         try{
 
-
-            storage.delete("a");
-            storage.delete("b");
-            storage.delete("c");
-            storage.delete("d");
+            parser.runCommand("DELETE a");
+            parser.runCommand("DELETE b");
+            parser.runCommand("DELETE c");
+            parser.runCommand("DELETE d");
             assertThatThrownBy(() -> storage.get("a")).isInstanceOf(Exception.class);
             assertThatThrownBy(() ->storage.get("b")).isInstanceOf(Exception.class);
             assertThatThrownBy(() ->storage.get("c")).isInstanceOf(Exception.class);
@@ -58,8 +50,6 @@ public class InputParserTest {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-
 
 
     }

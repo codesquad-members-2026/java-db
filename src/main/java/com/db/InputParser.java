@@ -1,4 +1,4 @@
-package com.memdb;
+package com.db;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,13 +12,13 @@ public class InputParser {
         this.storage = nosql;
         this.commandMap.put("SET", (String[] kv) -> {
             this.storage.set(kv[0],kv[1]);
-            return "SET SUCCESSFUL";
+            return "OK";
         });
         this.commandMap.put("GET", (String[] kv) -> {
             try{
                 return this.storage.get(kv[0]);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                return e.getMessage();
             }
         });
         this.commandMap.put("KEYS", (String[] kv) -> {
@@ -27,9 +27,9 @@ public class InputParser {
         this.commandMap.put("DELETE", (String[] kv) -> {
             try{
                 this.storage.delete(kv[0]);
-                return "DELETE COMPLETE";
+                return "OK";
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                return e.getMessage();
             }
         });
         this.commandMap.put("EXIT", (String[] kv)-> {

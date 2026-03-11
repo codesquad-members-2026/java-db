@@ -1,8 +1,8 @@
-package com.memdb;
+package com.db;
 
 import java.util.Scanner;
 
-public class InMemory {
+public class DBEntryPoint {
     public static void main(String[] args) {
         KeyValStorage myStorage = new KeyValStorage();
         InputParser userInputParser = new InputParser(myStorage);

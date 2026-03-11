@@ -1,4 +1,4 @@
-package com.memdb;
+package com.db;
 
 import org.junit.jupiter.api.*;
 import static org.assertj.core.api.Assertions.*;
