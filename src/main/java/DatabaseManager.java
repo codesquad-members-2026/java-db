@@ -18,7 +18,7 @@ public class DatabaseManager {
             try {
                 System.out.println(execute(command));
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println("ERROR: " + e.getMessage());
             }
             command = CommandParser.parse(scanner.nextLine());
         }

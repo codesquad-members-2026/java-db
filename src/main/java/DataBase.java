@@ -7,7 +7,8 @@ public class DataBase {
     private final Map<String, String> store = new HashMap<>();
 
     public String set(String key, String value) {
-        return store.put(key, value);
+        store.put(key, value);
+        return "OK";
     }
 
     public String get(String key) {
@@ -17,7 +18,8 @@ public class DataBase {
 
     public String delete(String key) {
         validateKeyExists(key);
-        return store.remove(key);
+        store.remove(key);
+        return "OK";
     }
 
     private void validateKeyExists(String key) {
