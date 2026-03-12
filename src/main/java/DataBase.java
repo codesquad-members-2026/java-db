@@ -4,7 +4,15 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class DataBase {
-    private final Map<String, String> store = new HashMap<>();
+    private final Map<String, String> store;
+
+    public DataBase() {
+        this(new HashMap<>());
+    }
+
+    public DataBase(Map<String, String> store) {
+        this.store = store;
+    }
 
     public String set(String key, String value) {
         store.put(key, value);
@@ -34,5 +42,9 @@ public class DataBase {
             sb.append(key).append(" ");
         }
         return sb.toString();
+    }
+
+    public Map<String, String> getAlls() {
+        return store;
     }
 }
