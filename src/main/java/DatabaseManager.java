@@ -1,11 +1,13 @@
+import java.util.Map;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 
 public class DatabaseManager {
     private final DataBase db;
+    private final FileManager fileManager;
 
-    public DatabaseManager(DataBase db) {
-        this.db = db;
+    public DatabaseManager() {
+        fileManager = new FileManager("data");
+        db = new DataBase(loadFile());
     }
 
     public void run() {
@@ -22,7 +24,7 @@ public class DatabaseManager {
             }
             command = CommandParser.parse(scanner.nextLine());
         }
-
+        saveFile();
         System.out.println("프로그램을 종료합니다");
     }
 
@@ -37,8 +39,17 @@ public class DatabaseManager {
         };
     }
 
+    private Map<String, String> loadFile() {
+        return fileManager.loadAll();
+    }
+
+    public void saveFile() {
+        Map<String, String> data = db.getAlls();
+        fileManager.writeFile(data);
+    }
+
     public static void main(String[] args) {
-        DatabaseManager databaseManager = new DatabaseManager(new DataBase());
+        DatabaseManager databaseManager = new DatabaseManager();
         databaseManager.run();
     }
 }

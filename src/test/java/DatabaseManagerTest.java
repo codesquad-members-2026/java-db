@@ -2,8 +2,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +17,7 @@ class DatabaseManagerTest {
 
     @BeforeEach
     void init() {
-        dbManager = new DatabaseManager(new DataBase());
+        dbManager = new DatabaseManager();
     }
 
     @Test
@@ -44,5 +48,25 @@ class DatabaseManagerTest {
         }
 
         assertThat(dbManager.execute(Command.ofType("KEYS")).split(" ")).containsExactlyInAnyOrderElementsOf(keys);
+    }
+
+
+    @Test
+    @DisplayName("데이터가 파일에 영속되어 재생성(프로그램 재시작) 후에도 유지된다")
+    void saveFile() {
+        dbManager.execute(Command.ofTypeKeyValue("SET", "name", "gabi"));
+        dbManager.saveFile();
+
+        // 새 인스턴스 - 파일에서 데이터를 다시 불러오는지 검증
+        dbManager = new DatabaseManager();
+
+        String getValue = dbManager.execute(Command.ofTypeAndKey("GET", "name"));
+        assertThat(getValue).isEqualTo("gabi");
+    }
+
+    @AfterEach
+    void clear() throws IOException {
+        Files.deleteIfExists(Path.of("data.bin"));
+        Files.deleteIfExists(Path.of("data.meta"));
     }
 }
